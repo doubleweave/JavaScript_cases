@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		#outer {
+			width: 750px;
+			height: 500px;
+			border: 1px solid black;
+			position: relative;
+		}
+		#inner {
+			width: 50px;
+			height: 50px;
+			background: red;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	</style>
+	<script>
+		window.onload = function() {
+			let speedX = 20;
+			let speedY = 20;
+
+			function move () {
+				let oOuter = document.getElementById("outer");
+				let oInner = document.getElementById("inner");
+				let outerStyle = getComputedStyle(oOuter);
+				let innerStyle = getComputedStyle(oInner);
+				let left = parseInt(innerStyle.left);
+				let top = parseInt(innerStyle.top);
+				let innerW = parseInt(innerStyle.width);
+				let innerH = parseInt(innerStyle.height);
+				let outerW = parseInt(outerStyle.width);
+				let outerH = parseInt(outerStyle.height);
+				let maxWidth = outerW - innerW;
+				let maxHeight = outerH - innerH;
+
+				left = left + speedX;
+				top = top + speedY;
+
+				if(left <= 0) {
+					left = 0;
+					speedX *= -1;
+				}
+				if(top <= 0) {
+					top = 0;
+					speedY *= -1;
+				}
+				if(left >= maxWidth) {
+					left = maxWidth;
+					speedX *= -1;
+				}
+				if(top >= maxHeight) {
+					top = maxHeight;
+					speedY *= -1;
+				}
+
+				oInner.style.left = left + "px";
+				oInner.style.top = top + "px";
+			}
+
+			let moveDivID = setInterval(() => {
+				move();
+			},50);
+
+			onkeypress = function(e) {
+				if(e.key === 'Enter') {
+					clearInterval(moveDivId);
+				}
+			}
+
+		}
+	</script>
+</head>
+<body>
+	<div id="outer">
+		<div id="inner"></div>
+	</div>
+</body>
+</html>

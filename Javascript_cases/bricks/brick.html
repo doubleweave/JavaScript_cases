@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		li {
+			list-style: none;
+		}
+		#container {
+			width: 1200px;
+			height: 600px;
+			margin: 10px auto;
+			border: 1px solid red;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			position: relative;
+		}
+		#container #box {
+			width: 800px;
+			height: 500px;
+			border: 1px solid red;
+			position: relative;
+		}
+		#container #box ul {
+			position: relative;
+		}
+		#container #box ul li {
+			position: absolute;
+			float: left;
+			border: 1px solid #fff;
+			width: 78px;
+			height: 18px;
+		}
+		#container #box #board {
+			position: absolute;
+			left: 320px;
+			bottom: 0;
+			width: 160px;
+			height: 10px;
+			background-color:#e9831a;
+			border-radius: 5px;
+		}
+		#container #box #bubble {
+			position: absolute;
+			left: 350px;
+			bottom: 10px;
+			width: 20px;
+			height: 20px;
+			background: red;
+			border-radius: 50%;
+		}
+		#container #show {
+			width: 300px;
+			height: 500px;
+			border: 1px solid red;
+			position: relative;
+		}
+		#container #start {
+			position: absolute;
+			left: 400px;
+			bottom: 10px;
+			width: 80px;
+			height: 30px;
+			background: #7aaeff;
+		}
+		#container #box span{
+        font-size: 60px;
+        color: #666666;
+        position: absolute;
+        left: 275px;
+        bottom: 230px;
+        display: block;
+    }
+		#container #show span {
+			display: block;
+			font-size: 30px;
+			color: #666666;
+		}
+		#container #show span:nth-of-type(odd) {
+			font-size: 26px;
+			color: #96999c;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div id="box">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div id="bubble"></div>
+			<div id="board"></div>
+		</div>
+		<div id="show">
+			<span id="info">Game Info</span>
+			<span>Time:</span>
+			<span id="time">Loading...</span>
+			<span>Game state:</span>
+			<span id="res">Loading...</span>
+			<span>Board hits buble:</span>
+			<span id="times">Loading...</span>
+			<span>Score:</span>
+			<span id="score">Loading...</span>
+		</div>
+		<button id="start">Start</button>
+	</div>
+</body>
+<script>
+	(function(){
+		function $(id) {
+			return document.getElementById(id);
+		}
+		function randomNumber(min, max) {
+			return parseInt(Math.random() * (max - min) + min);
+		}
+		
+		function BlockBreak() {
+			this.box = $("box");
+			this.list = document.getElementsByTagName("li");
+			this.ball = $("bubble");
+			this.board = $("board");
+			this.fx = 3;
+			this.fy = -3;
+			this.initLeft = 0;
+			this.initTop = 0;
+			this.gameover = $("gameover");
+		}
+		//display blocks at their positions
+		BlockBreak.prototype.init = function() {
+			for(let i = 0; i < this.list.length; i++) {
+				this.list[i].style.backgroundColor = "rgb(" + randomNumber(0, 255) + ','  + randomNumber(0, 255) + ','  + randomNumber(0, 255) + ')';
+				let left = this.initLeft * this.list[0].offsetWidth;
+				let top = this.initTop;
+				this.list[i].style.left = left + 'px';
+				this.list[i].style.top = top + 'px';
+				this.initLeft++;
+
+				if((i + 1) % 10 === 0) {
+					this.initLeft = 0;
+					this.initTop += this.list[0].offsetHeight;
+				}
+			}
+		};
+
+		BlockBreak.prototype.keydown = function () {
+			let that = this;
+			
+			document.onkeydown = function(e) {
+				let evt = e || event;
+				if(evt.keyCode === 37) {
+					let left = that.board.offsetLeft - 30;
+					if(left <= 0) {
+						left = 0;
+					}
+					that.board.style.left = left + 'px';
+				}
+				
+				if(evt.keyCode === 39) {
+					let left = that.board.offsetLeft + 30;
+					if(left >= that.box.offsetWidth - that.board.offsetWidth) {
+						left = that.box.offsetWidth - that.board.offsetWidth;
+					}
+					that.board.style.left = left + 'px';
+				}
+			}
+		};
+
+		let times = 0;
+		let score = 0;
+
+		BlockBreak.prototype.move = function() {
+			let timer = null;
+			let that = this;
+			ballTimer = setInterval(() => {
+				//move of the ball
+				let currentLeft = that.ball.offsetLeft + that.fx;
+				let currentTop = that.ball.offsetTop + that.fy;
+
+				if(currentLeft <= 0) {
+					// currentLeft = 0;
+					that.fx  *= -1;
+				}
+				if(currentLeft >= that.box.offsetWidth - that.ball.offsetWidth) {
+					// currentLeft = that.box.offsetWidth - that.ball.offsetWidth;
+					that.fx *= -1;
+				}
+				if(currentTop <= 0) {
+					// currentTop = 0;
+					that.fy *= -1;
+				}
+				if(currentTop >= (that.box.offsetHeight - that.ball.offsetHeight)) {
+					// currentTop = that.box.offsetHeight - that.ball.offsetHeight;
+					clearInterval(ballTimer);
+					let newNode = document.createElement('span');
+					let newText = document.createTextNode('Game Over');
+					newNode.appendChild(newText);
+					that.box.appendChild(newNode);
+					$('res').innerHTML = "GAME OVER!!";
+				}
+
+				//collision between ball and board
+				let boardLeft = that.board.offsetLeft;
+				let boardTop = that.board.offsetTop;
+				// console.log("boardLeft, boardTop",boardLeft,boardTop);
+
+				let boardCollisionX = currentLeft >= boardLeft && (currentLeft + that.ball.offsetWidth <= boardLeft + that.board.offsetWidth);
+				let boardCollisionY = (currentTop + 20) > boardTop;
+
+				if(boardCollisionX && boardCollisionY) {
+					that.fx *= -1;
+					that.fy *= -1;
+					times++;
+					$("times").innerHTML = `Ball hit the board ${times} times.`;
+					console.log("ball hit the board for " + times + " times.");
+				}
+
+
+				//collision between ball and blocks
+				for(let i = 0; i < that.list.length; i++) {
+					let blockLeft = that.list[i].offsetLeft;
+					let blockTop = that.list[i].offsetTop;
+					let blockCollisionX = currentLeft >= blockLeft && (currentLeft <= blockLeft + that.list[0].offsetWidth);
+					let blockCollisionYAbove = (currentTop + that.ball.offsetHeight) >= blockTop && currentTop <= blockTop;
+					let blockCollisionYBelow = currentTop <= (blockTop + that.list[0].offsetHeight) && currentTop >= blockTop;
+
+					if(blockCollisionX && (blockCollisionYAbove || blockCollisionYBelow)) {
+						console.log("Ball hit block.");
+						score++;
+						that.fy *= -1;
+						that.list[i].style.display = "none";
+						$("score").innerHTML = `Score: ${score}`;
+					}
+				}
+
+				that.ball.style.left = currentLeft + 'px';
+				that.ball.style.top = currentTop + 'px';
+			}, 10);
+		};
+
+		let bb = new BlockBreak();
+		bb.init();
+
+		$("start").onclick = function() {
+			bb.move();
+			bb.keydown();
+			
+			setInterval(() => {
+				let now = new Date();
+				$("time").innerHTML = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+			}, 10)
+			
+			$("res").innerHTML = "Game loaded."
+		}
+
+	})()
+</script>
+</html>

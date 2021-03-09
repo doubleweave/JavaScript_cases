@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		#outer {
+      width: 1000px;
+      height: 500px;
+      border: 1px solid black;
+      position: relative;
+    }
+    #innerA {
+      width: 150px;
+      height: 150px;
+      background: red;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    #innerB {
+      width: 150px;
+      height: 150px;
+      background: yellow;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+	</style>
+	<script>
+		window.onload = function() {
+			class MoveDiv {
+				constructor(speedX, speedY, inner, outer, otherInner) {
+					this.speedX = speedX;
+					this.speedY = speedY;
+					this.inner = inner;
+					this.outer = outer;
+					this.left = 0;
+					this.top = 0;
+
+					this.otherInner = otherInner;
+				}
+				move(interId) {
+					this.check_border();
+					this.inner.style.left = this.left + "px";
+					this.inner.style.top = this.top + "px";
+					this.check_block_collision();
+				}
+				check_border() {
+					let innerStyle = getComputedStyle(this.inner);
+					let outerStyle = getComputedStyle(this.outer);
+					this.left = parseInt(innerStyle.left);
+					this.top = parseInt(innerStyle.top);
+					let innerW = parseInt(innerStyle.width);
+					let innerH = parseInt(innerStyle.height);
+					let outerW = parseInt(outerStyle.width);
+					let outerH = parseInt(outerStyle.height);
+					let maxWidth = parseInt(outerW - innerW);
+					let maxHeight = parseInt(outerH - innerH);
+
+					this.left = this.left + this.speedX;
+					this.top = this.top + this.speedY;
+
+					if(this.left <= 0) {
+						this.left = 0;
+						this.speedX *= -1;
+					}
+					if(this.top <= 0) {
+						this.top = 0;
+						this.speedY *= -1;
+					}
+					if(this.left >= maxWidth) {
+						this.left = maxWidth;
+						this.speedX *= -1;
+					}
+					if(this.top >= maxHeight) {
+						this.top = maxHeight;
+						this.speedY *= -1;
+					}
+				}
+
+				check_block_collision() {
+					let innerStyle = getComputedStyle(this.inner);
+					let outerStyle = getComputedStyle(this.outer);
+					let left1 = this.left;
+					let top1 = this.top;
+					let innerW = parseInt(innerStyle.width);
+					let innerH = parseInt(innerStyle.height);
+
+					let other_inner_left = parseInt(getComputedStyle(this.otherInner).left);
+					let other_inner_top = parseInt(getComputedStyle(this.otherInner).top);
+					let other_inner_width = parseInt(getComputedStyle(this.otherInner).width);
+					let other_inner_height = parseInt(getComputedStyle(this.otherInner).height);
+					
+					let left = left1 + this.speedX;
+					let top = top1 + this.speedY;
+
+					let minDistanceX = (innerW + other_inner_width) / 2;
+					let minDistanceY = (innerH + other_inner_height) / 2;
+
+					let currentDistanceX = Math.abs(left - other_inner_left);
+					let currentDistanceY = Math.abs(top - other_inner_top);
+					
+					if(currentDistanceX <= minDistanceX && currentDistanceY <= minDistanceY) {
+						this.left = left;
+						this.top = top;
+						this.speedX *= -1;
+						this.speedY *= -1;
+					}
+
+				}
+			}
+
+			let innerA = document.getElementById("innerA");
+			let innerB = document.getElementById("innerB");
+			let outer = document.getElementById("outer");
+			
+			this.moveA = new MoveDiv(20, 20, innerA, outer, innerB);
+			this.moveB = new MoveDiv(20, 20, innerB, outer, innerA);
+			
+			this.inter = setInterval(() => {
+				moveA.move();
+				moveB.move();
+			}, 50);
+		}
+	</script>
+</head>
+<body>
+	<div id="outer">
+		<div id="innerA"></div>
+		<div id="innerB"></div>
+	</div>
+</body>
+</html>

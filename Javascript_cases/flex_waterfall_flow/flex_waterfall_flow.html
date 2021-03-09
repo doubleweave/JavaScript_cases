@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.wrap {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+		}
+		.wrap div {
+			position: absolute;
+			width: 210px;
+			float: left;
+			border: 1px solid #000;
+			padding: 5px;
+		}
+		.wrap div h3 {
+			line-height: 35px;
+		}
+		.wrap div img {
+			width: 200px;
+		}
+	</style>
+	<script>
+		function waterfall(el, gap, children){
+			if(!el) {
+				return;
+			}
+			gap = gap || 10;
+			children = children || 'div';
+
+			let wrap = document.getElementById(el);
+			let water = wrap.getElementsByTagName(children);
+
+			let wrapWidth = wrap.offsetWidth;
+			let blockWidth = water[0].offsetWidth;
+
+			let colNum = Math.floor(wrapWidth / blockWidth);
+			let padding = Math.floor((wrapWidth - colNum * blockWidth) / (colNum + 1));
+
+			let columnArr = [];
+			let maxHeight = 0;
+
+			// console.log('wrap', wrap);
+			// console.log('water', water);
+			// console.log('wrapWidth', wrapWidth);
+			// console.log('blockWidth', blockWidth);
+			// console.log('colNum', colNum);
+			// console.log('padding', padding);
+			
+			// record info for each column
+			for(let i = 0; i < colNum; i++) {
+				columnArr[i] = {};
+				columnArr[i].top = gap;
+				columnArr[i].left = i * blockWidth + (i + 1) * padding;
+				// console.log('columnArr[i].top', columnArr[i].top);
+				// console.log('columnArr[i].left', columnArr[i].left);
+			}
+
+			for(let i = 0; i < water.length; i++) {
+				let sub = 0;
+				//sub start from 1.
+				//sub is the number of column for water[i]
+				//because colNum start from 1.
+				if((i + 1) % colNum === 0) {
+					sub = colNum;
+				} else {
+					sub = (i + 1) % colNum;
+				}
+
+				// console.log('water: ' + i + ' , sub: ' + sub);
+
+				water[i].style.position = 'absolute';
+				// sub - 1 is the index of obj stores info of column sub
+				water[i].style.top = columnArr[sub - 1].top + 'px';
+				water[i].style.left = columnArr[sub - 1].left + 'px';
+				columnArr[sub - 1].top += water[i].offsetHeight + gap;
+
+				// console.log(columnArr);
+
+				// console.log('water[i].style.top:',i, sub-1, columnArr[sub - 1].top);
+				// console.log('water[i].style.left:',i, sub-1,  columnArr[sub - 1].left);
+				// console.log('columnArr[sub - 1].top: sub',sub - 1, columnArr[sub - 1].top);
+			}
+
+			// console.log(columnArr);
+			// console.log('Length of Arr', columnArr.length);
+
+			for(let i = 0; i < columnArr.length; i++) {
+				console.log('Updating maxHeight:', columnArr[i].top);
+				//columnArr[i].top is the bottom of each column, ready to add new element.
+				if(columnArr[i].top > maxHeight) {
+					maxHeight = columnArr[i].top;
+				}
+			}
+			// for(let i = 0; i < colNum; i++) {
+			// 	console.log('Updating:', columnArr[i]);
+			// }
+ 
+			console.log('maxHeight', maxHeight);
+
+			wrap.style.height = maxHeight + 'px';
+
+		}
+		window.onload = function() {
+			waterfall("wrap");
+		}
+		window.onresize = function() {
+			waterfall('wrap');
+		}
+	</script>
+</head>
+<body>
+	<div class="wrap" id="wrap">
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/1.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/2.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/3.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/4.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/5.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/6.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/7.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/8.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/9.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/10.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/11.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/12.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/13.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/14.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/15.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/16.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/17.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/18.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/19.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/20.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/21.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/22.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/23.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/24.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/25.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/26.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/27.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/28.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/29.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/30.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/31.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/32.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/33.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/34.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/35.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/36.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/37.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/38.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/39.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/40.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/41.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/42.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/43.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/44.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/45.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/46.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/47.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/48.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/49.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/50.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/51.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/52.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/53.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/54.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/55.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/56.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/57.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/58.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/59.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+		<div>
+			<h3>Waterfall flow</h3>
+			<a href="javascript:;"><img src="img/60.jpg"></a>
+			<p>Waterfall flowWaterfall flowWaterfall flowWaterfall flow</p>
+			<span>Waterfall flowWaterfall flowWaterfall flowWaterfall flowWaterfall</span>
+		</div>
+	
+	
+	</div>
+</body>
+</html>

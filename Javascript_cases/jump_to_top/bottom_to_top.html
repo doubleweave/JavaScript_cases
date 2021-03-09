@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.box div {
+			height: 600px;
+			background: #9e7575;
+			border-bottom: 1px solid red;
+			color: rgb(239, 240, 235);
+			text-align: 'center';
+			line-height: 600px;
+			font-size: 100px;
+		}
+		#jumpToTop {
+			position: fixed;
+			bottom: 80px;
+			right: 5px;
+			width: 140px;
+			height: 30px;
+			font-size: 18px;
+			color: #fff;
+			background: #000;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+		<div>4</div>
+		<div>5</div>
+		<div>6</div>
+		<button id="jumpToTop">Jump to top</button>
+	</div>
+</body>
+<script>
+	(function() {
+		let btn = document.getElementById('jumpToTop');
+		let timer = null;
+		window.onscroll = function() {
+			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+			if(scrollTop >= 600) {
+				btn.style.display = 'block';
+			} else {
+				btn.style.display = 'none';
+			}
+			console.log('timer is: ', timer);
+		}
+		btn.onclick = function() {
+			if(timer) {
+				clearInterval(timer);
+			}
+			timer = setInterval(() => {
+				let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+				if(scrollTop === 0) {
+					clearInterval(timer);
+				} 
+				let speed = scrollTop / 5;
+				document.documentElement.scrollTop = document.body.scrollTop = scrollTop - speed;
+			}, 50);
+		};
+	})()
+</script>
+</html>

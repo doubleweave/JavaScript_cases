@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<!-- <link rel="stylesheet" type="text/css" href="test-1.css" > -->
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		li {
+			list-style: none;
+		}
+		.container {
+			margin: 50px auto;
+			width: 1000px;
+			height: 1000px;
+		}
+		.container .nav {
+			display: flex;
+			overflow: hidden;
+			width: 1000px;
+		}
+		.container .nav ul li {
+			float: left;
+		}
+		.container .nav li a {
+			display: block;
+			width: 199px;
+			height: 40px;
+			color: #fff;
+			font-size: 18px;
+			line-height: 40px;
+			text-align: center;
+			background: #000;
+			border-right: 1px dashed #fff;
+		}
+		.container .nav li:last-child {
+			border-right: none;
+			width: 200px;
+		}
+		.container .carousel{
+			width: 1000px;
+			height: 510px;
+		}
+		.container .carousel img {
+			width: 1000px;
+			height: 510px;
+		}
+		.container #fixed {
+			display: none;
+			position: fixed;
+			overflow: hidden;
+			top: -40px;
+			/* top: 0; */
+			z-index:1;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="nav">
+			<ul>
+				<li><a>Home</a></li>
+				<li><a>Products</a></li>
+				<li><a>Services</a></li>
+				<li><a>Contact us</a></li>
+				<li><a>About us</a></li>
+			</ul>
+		</div>
+		<div class="nav" id="fixed">
+			<ul>
+				<li><a>Home</a></li>
+				<li><a>Products</a></li>
+				<li><a>Services</a></li>
+				<li><a>Contact us</a></li>
+				<li><a>About us</a></li>
+			</ul>
+		</div>
+		<div class="carousel">
+			<img src="./img/fly.jpg" alt="">
+		</div>
+	</div>
+</body>
+<script>
+	(function() {
+		let fixedNav = document.getElementById('fixed');
+		console.log(fixedNav.offsetTop);
+		let showtimer = null;
+		let hidetimer = null;
+		let isMovingDown = false;
+		window.onscroll = function() {
+			let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+			console.log(scrollTop);
+			console.log('top',fixedNav.offsetTop);
+			console.log('display',getComputedStyle(fixedNav).display);
+			if(scrollTop >= 90 && getComputedStyle(fixedNav).display === 'none') {
+				fixedNav.style.display = 'block';
+				if(fixedNav.offsetTop < 0 && getComputedStyle(fixedNav).display === 'block'){
+					showtimer = setInterval(() => {
+						if(fixedNav.offsetTop < 0) {
+							console.log('Increasing.');
+							fixedNav.style.top = fixedNav.offsetTop + 5 + 'px';
+							console.log('In showtimer');
+							console.log('offsetTop', fixedNav.offsetTop);
+							console.log('fixedNav', getComputedStyle(fixedNav).display);
+						}  else {
+							console.log('--------------------.');
+							clearInterval(showtimer);
+							console.log('showtimer',showtimer);
+						}
+					}, 30);
+				}
+			} 
+			else if(scrollTop <= 80 && getComputedStyle(fixedNav).display === 'block') {
+				fixedNav.style.display = 'none';
+				fixedNav.style.top = '-40px';
+			}
+		}
+	})()
+</script>
+</html>

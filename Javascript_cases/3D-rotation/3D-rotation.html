@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background: #000;
+		}
+		.container {
+			perspective: 800px;
+			width: 150px;
+			height: 150px;
+			margin: 100px auto;
+		}
+		.container .content {
+			transform-style: preserve-3d;
+			/* transform: rotateY(80deg); */
+			width: 150px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -75px;
+			transition: all .5s;
+		}
+		.container .content img {
+			width: 150px;
+			height: 200px;
+			transition: all .5s;
+			position: absolute;
+			border-radius: 5px;
+			box-shadow: 0 0 5px #fff;
+		}
+		.container .content img.current {
+			box-shadow: 0 0 15px #f99;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="content" id="content">
+			<img src="img/1.jpg" alt="">
+			<img src="img/2.jpg" alt="">
+			<img src="img/3.jpg" alt="">
+			<img src="img/4.jpg" alt="">
+			<img src="img/5.jpg" alt="">
+			<img src="img/6.jpg" alt="">
+			<img src="img/7.jpg" alt="">
+			<img src="img/8.jpg" alt="">
+			<img src="img/9.jpg" alt="">
+		</div>
+	</div>
+</body>
+<script>
+	(function(){
+		let oContent = document.getElementById('content');
+		
+		let oImgs = oContent.children;
+		
+
+		for(let i = 0; i < oImgs.length; i++) {
+			oImgs[i].style.transform = `rotateY(${i * 40}deg) translateZ(266px) rotateY(0deg)`;
+		}
+
+		function showThreeImage(index) {
+			oContent.style.transform = `rotateY(${-1 * index * 40}deg)`;
+
+			let now = index % 9;
+			let beforeImg = index % 9 - 1;
+			if(beforeImg === -1) {
+				beforeImg = 8;
+			}
+			let afterImg = index % 9 + 1;
+			if(afterImg === 9) {
+				afterImg = 0;
+			}
+			console.log(beforeImg, now, afterImg);
+
+			oImgs[beforeImg].style.transform = `rotateY(${beforeImg * 40}deg) translateZ(266px) rotateY(45deg)`;
+			oImgs[afterImg].style.transform = `rotateY(${afterImg * 40}deg) translateZ(266px) rotateY(-45deg)`;
+			oImgs[now].style.transform = `rotateY(${now * 40}deg) translateZ(266px) rotateY(0deg)`;
+
+			oImgs[now].classList.add('current');
+			oImgs[beforeImg].classList.remove('current');
+		}
+
+		let currentIndex = 0;
+		showThreeImage(currentIndex);
+
+		document.onclick = function() {
+			currentIndex++;
+			showThreeImage(currentIndex);
+		}
+
+	})()
+</script>
+</html>

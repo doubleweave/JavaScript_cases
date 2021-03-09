@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.box {
+			height: 60px;
+			border: 1px solid black;
+			display: flex;
+			justify-content: center;
+			align-items: baseline;
+		}
+		img {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<img src="img/0.png" alt="">
+		<img src="img/0.png" alt="">
+		<span>Hour</span>
+		<img src="img/0.png" alt="">
+		<img src="img/0.png" alt="">
+		<span>Minute</span>
+		<img src="img/0.png" alt="">
+		<img src="img/0.png" alt="">
+		<span>Second</span>
+	</div>
+</body>
+<script>
+	(function() {
+
+		let oImgs = document.getElementsByClassName('box')[0].getElementsByTagName('img');
+
+		console.log(oImgs);
+
+		let timer = setInterval(() => {
+			let date = new Date();
+			let hour = date.getHours();
+			let minute = date.getMinutes();
+			let second = date.getSeconds();
+		
+			let _date = [
+				hour < 10 ? 0: Math.floor(hour / 10) , hour % 10,
+				minute < 10 ? 0: Math.floor(minute / 10), minute % 10,
+				second < 10 ? 0 : Math.floor(second / 10), second % 10
+			];
+		
+			for(let i = 0; i < oImgs.length; i++) {
+				oImgs[i].src = `img/${_date[i]}.png`;
+			}
+
+		}, 1000);
+	})()
+</script>
+</html>

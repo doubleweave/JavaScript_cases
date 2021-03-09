@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background: #000;
+    }
+
+    .container {
+      width: 150px;
+      height: 150px;
+      margin: 100px auto;
+      perspective: 800px;
+    }
+
+    .content {
+      transform-style: preserve-3d;
+      width: 150px;
+      margin-left: -75px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transition: all .5s;
+    }
+
+    .content img {
+      width: 150px;
+      height: 200px;
+      position: absolute;
+      transition: all .5s;
+      border-radius: 10px;
+      box-shadow: 0 0 5px #fff;
+    }
+
+    .content img.active {
+      box-shadow: 0 0 15px #f99;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="content" id="content">
+    <img src="img/1.jpg" alt="">
+    <img src="img/2.jpg" alt="">
+    <img src="img/3.jpg" alt="">
+    <img src="img/4.jpg" alt="">
+    <img src="img/5.jpg" alt="">
+    <img src="img/6.jpg" alt="">
+    <img src="img/7.jpg" alt="">
+    <img src="img/8.jpg" alt="">
+    <img src="img/9.jpg" alt="">
+  </div>
+</div>
+</body>
+<script>
+  window.onload = function () {
+    let oContent = document.getElementById("content");
+    let oImage = oContent.children;
+
+    for (let i = 0; i < oImage.length; i++) {
+      oImage[i].style.transform = "rotateY(" + i * 40 + "deg) translateZ(226px) rotate(0deg)";
+    }
+
+    let index = 0;
+    changeImage(index);
+
+
+    document.onclick = function () {
+      index++;
+      changeImage(index);
+    };
+
+    function changeImage(index) {
+      oContent.style.transform = "rotateY(" + -index * 40 + "deg)";
+
+      let now = index % 9;
+      let beforeImage = index % 9 - 1;
+      if (beforeImage === -1) {
+        beforeImage = 8;
+      }
+      let afterImage = index % 9 + 1;
+      if (afterImage === 9) {
+        afterImage = 0;
+      }
+
+      oImage[afterImage].style.transform = "rotateY(" + afterImage * 40 + "deg) translateZ(226px) rotateY(-45deg)";
+      oImage[beforeImage].style.transform = "rotateY(" + beforeImage * 40 + "deg) translateZ(226px) rotateY(45deg)";
+      oImage[now].style.transform = "rotateY(" + now * 40 + "deg) translateZ(226px)";
+
+      oImage[now].classList.add("active");
+      oImage[beforeImage].classList.remove("active");
+    }
+  }
+</script>
+</html>

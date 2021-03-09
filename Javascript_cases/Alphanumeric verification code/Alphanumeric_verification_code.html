@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.box #vCode{
+			display: inline-block;
+			width: 80px;
+			height: 20px;
+			font-style: italic;
+			background: url(img/1.jpg) -10px -15px;
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<input type="text">
+		<span id="vCode"></span>
+		<a href="javascript: void(0);" id="change_vCode">Change Code</a>
+	</div>
+</body>
+<script>
+	(function() {
+		function $(id) {
+			return document.getElementById(id);
+		}
+		function randomNumber(min, max) {
+			return Math.floor(Math.random() * (max - min + 1) + min);
+		}
+
+		function createVCode() {
+			let res = [];
+			for(let i = 0; i < 6; i++) {
+				let vCode = randomNumber(48, 122);
+				if(vCode >= 58 && vCode <= 64 || vCode >= 91 && vCode <= 96) {
+					i--;
+				} else {
+					res[i] = String.fromCharCode(vCode);
+				}
+			}
+			$("vCode").innerHTML = res.join("");
+		}
+
+		window.onload = function() {
+			createVCode();
+		};
+
+		$("change_vCode").onclick = function() {
+			createVCode();
+		};
+	})()
+</script>
+</html>

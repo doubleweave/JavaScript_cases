@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		#box {
+			width: 600px;
+			height: 300px;
+			border: 1px solid red;
+			margin: 10px auto;
+			position: relative;
+			overflow: hidden;
+		}
+		#box #screen {
+			width: 600px;
+			height: 280px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: url(./img/city.jpg);
+		}
+		#box #content {
+			width: 600px;
+			height: 280px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			opacity: .5;
+			z-index: 1;
+		}
+		#box #btn {
+			position: absolute;
+			bottom: 0;
+			display: flex;
+			align-items: center;
+			width: 600px;
+			height: 20px;
+		}
+		#box #btn #text {
+			margin: 0 2px;
+			width: 296px;
+			height: 16px;
+			float: left;
+		}
+		#box #btn #sendCon, #box #btn #showCon, #box #btn #hideCon {
+			display: block;
+			float: left;
+			margin: 0 2px;
+			width: 94px;
+			background: #7aaeff;
+			border: 1px solid #666;
+			text-align: center;
+			line-height: 16px;
+			height: 16px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div id="screen"></div>
+		<div id="content"></div>
+		<p id="btn">
+			<span><input type="text" id="text"></span>
+			<span><button id="sendCon">Send</button></span>
+			<span><button id="hideCon">Hide</button></span>
+			<span><button id="showCon">Show</button></span>
+		</p>
+	</div>
+</body>
+<script>
+	(function() {
+		function $(id) {
+			return document.getElementById(id);
+		}
+		function randomNumber(min, max) {
+			let res = parseInt(Math.random() * (max - min) + min);
+			console.log('random number is:', res);
+			return res;
+		}
+
+		function sendMessage() {
+			let oSpan = document.createElement('span');
+			oSpan.innerHTML = $("text").value;
+			$("content").appendChild(oSpan);
+
+			oSpan.style.fontWeight = 'bold';
+			oSpan.style.fontSize = '36px';
+			oSpan.style.color = '#000';
+			oSpan.style.position = 'absolute';
+			// console.log("oSpan.style.fontSize", oSpan.style.fontSize);
+			// console.log("oSpan.parentNode.offsetWidth - oSpan.style.fontSize", oSpan.parentNode.offsetWidth - parseInt(oSpan.style.fontSize));
+			let oSpanWidth = oSpan.offsetWidth;
+			let maxHeight = oSpan.parentNode.offsetHeight - parseInt(oSpan.style.fontSize);
+			console.log("oSpan.parentNode", oSpan.parentNode);
+			oSpan.style.top = randomNumber(parseInt(oSpan.style.fontSize), maxHeight) + "px";
+			oSpan.style.left = oSpan.parentNode.offsetWidth + "px";
+			console.log("oSpan.style.left", oSpan.style.left);
+			startToMove(oSpan, {"left": -oSpanWidth}, function() {
+				oSpan.remove();
+			});
+		}
+
+		function startToMove(oSpan, endPos, endFunc) {
+			if(oSpan.innerHTML === '') {
+				endFunc();
+				return;
+			}
+			console.log("Good node:", oSpan.innerHTML);
+
+			let oSpanLeft = oSpan.offsetLeft;
+			let barrageTimer =  setInterval(() => {
+				oSpan.style.left = oSpanLeft - 10 + 'px';
+				oSpanLeft = oSpan.offsetLeft;
+				if(oSpanLeft <= endPos.left) {
+					console.log('oSpan have reached end.');
+					endFunc();
+					clearInterval(barrageTimer);
+				}
+				
+			}, 50);
+		}
+
+		$("sendCon").onclick = function() {
+			sendMessage();
+			$("text").value = '';
+		};
+		
+		$("hideCon").onclick = function() {
+			$("content").style.opacity = 0;
+			$("content").style.filter = "alpha(opacity = 0)";
+		};
+		$("showCon").onclick = function() {
+			$("content").style.opacity = .5;
+			$("content").style.filter = "alpha(opacity = .5)";
+		};
+
+	})()
+</script>
+</html>
